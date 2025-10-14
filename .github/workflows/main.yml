@@ -1,0 +1,16 @@
+name: Setup macOS Environment
+ 
+on:
+  workflow_dispatch:
+ 
+jobs:
+  setup-macos:
+    runs-on: macos-14
+ 
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Docker on macOS
+        uses: douglascamata/setup-docker-macos-action@v1.0.1
