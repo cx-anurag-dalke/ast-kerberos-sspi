@@ -1,16 +1,30 @@
-name: Setup macOS Environment
- 
+name: Pre-commit Check
+
 on:
-  workflow_dispatch:
- 
+  push:
+    branches:
+      - main
+  pull_request:
+
 jobs:
-  setup-macos:
-    runs-on: macos-13
- 
+  pre-commit:
+    runs-on: cx-public-ubuntu-x64
+
     steps:
-      # Step 1: Checkout repository
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
-      
-      - name: Setup Docker on macOS
-        uses: douglascamata/setup-docker-macos-action@v1.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Check Python version
+        run: python --version
+
+      - name: Install pre-commit from Echo registry
+        run: |
+          pip install pre-commit==4.6.0 --index-url https://:${{ secrets.ECHO_ACCESS_KEY }}pypi.echohq.com/simple
+
+      - name: Verify pre-commit installation
+        run: pre-commit --version
